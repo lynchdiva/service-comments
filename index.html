@@ -8,6 +8,38 @@
     <title>Сервис комментариев</title>
   </head>
   <body>
+    <main class="main">
+      <div class="comments-service">
+        <form class="comments-service__form" action="index.html" method="get">
+          <h1 class="comments-service__title">Оставьте ваш комментарий:</h1>
+
+          <label class="comments-service__label" for=""
+            >Введите ваше <strong>Имя:</strong></label
+          >
+          <input class="comments-service__input" type="text" />
+
+          <label class="comments-service__label" for=""
+            >Введите ссылку <strong>вашего аватара:</strong></label
+          >
+          <input class="comments-service__input" type="url" />
+
+          <label class="comments-service__label" for=""
+            >Оставьте комментарий:</label
+          >
+          <textarea class="comments-service__textarea" name=""></textarea>
+
+          <button class="comments-service__btn" type="button">Отправить</button>
+        </form>
+
+        <div class="comments-service__chat">
+          <h2 class="comments-service__subtitle">Чат</h2>
+
+          <div><img class="comments-service__avatar" src="" alt="" /></div>
+
+          <div class="comments-service__comment"></div>
+        </div>
+      </div>
+    </main>
     <script src="./assets/scripts/index.js"></script>
   </body>
 </html>
