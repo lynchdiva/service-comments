@@ -13,30 +13,67 @@
         <form class="comments-service__form" action="index.html" method="get">
           <h1 class="comments-service__title">Оставьте ваш комментарий:</h1>
 
-          <label class="comments-service__label" for=""
-            >Введите ваше <strong>Имя:</strong></label
+          <label class="comments-service__label" for="name"
+            >Введите ваше <strong>Имя* (обязательное поле):</strong></label
           >
-          <input class="comments-service__input" type="text" />
+          <input
+            class="comments-service__input"
+            type="text"
+            name="name"
+            id="name"
+            maxlength="40"
+            autocomplete="off"
+            autofocus
+          />
 
-          <label class="comments-service__label" for=""
-            >Введите ссылку <strong>вашего аватара:</strong></label
+          <label class="comments-service__label" for="url-avatar"
+            >Введите ссылку вашего аватара:</label
           >
-          <input class="comments-service__input" type="url" />
+          <input
+            class="comments-service__input"
+            type="url"
+            name="url-avatar"
+            id="url-avatar"
+            autocomplete="off"
+          />
 
-          <label class="comments-service__label" for=""
-            >Оставьте комментарий:</label
+          <label class="comments-service__label" for="comment"
+            >Оставьте <strong>комментарий* (обязательное поле):</strong></label
           >
-          <textarea class="comments-service__textarea" name=""></textarea>
+          <textarea
+            class="comments-service__textarea"
+            name="comment"
+            id="comment"
+            spellcheck="true"
+            autocomplete="off"
+          ></textarea>
 
-          <button class="comments-service__btn" type="button">Отправить</button>
+          <button class="comments-service__btn" type="button">
+            <span class="comments-service__tooltip"
+              >Заполните обязательные поля</span
+            >
+            Отправить
+          </button>
+
+          <span class="comments-service__tooltip"></span>
         </form>
 
         <div class="comments-service__chat">
           <h2 class="comments-service__subtitle">Чат</h2>
 
-          <div><img class="comments-service__avatar" src="" alt="" /></div>
+          <div class="comments-service__comment-box hidden">
+            <div class="comments-service__avatar-box">
+              <img
+                class="comments-service__avatar"
+                src="./assets/icons/avatar-default.svg"
+                alt="Аватар"
+              />
+            </div>
 
-          <div class="comments-service__comment"></div>
+            <p class="comments-service__nickname"></p>
+
+            <p class="comments-service__comment"></p>
+          </div>
         </div>
       </div>
     </main>
