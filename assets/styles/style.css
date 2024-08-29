@@ -242,5 +242,9 @@ body {
     html {
       font-size: 8px;
     }
+
+    .comments-service {
+      max-width: 90%;
+    }
   }
 }
