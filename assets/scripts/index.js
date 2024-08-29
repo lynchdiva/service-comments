@@ -80,5 +80,8 @@ function addAvatar(elem) {
 }
 
 function filterSpam(comment) {
-  return comment.replace(/viagra/gi, '***').replace(/xxx/gi, '***');
+  return comment
+    .replace(/viagra/gi, '***')
+    .replace(/xxx/gi, '***')
+    .replace(/виагра/gi, '***');
 }
