@@ -27,7 +27,7 @@ function showComment() {
 
 function hasEmptyField() {
   const requiredFields = document.querySelectorAll('.required');
-  let anyEmpty;
+  let anyEmpty = false;
 
   requiredFields.forEach(field => {
     if (!field.value) {
