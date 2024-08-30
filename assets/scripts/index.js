@@ -1,31 +1,39 @@
 'use strict';
 
 const btn = document.querySelector('.comments-service__btn');
-btn.addEventListener('click', showComment);
+btn.addEventListener('click', addComment);
 
-function showComment() {
-  if (hasEmptyField()) {
+function addComment() {
+  if (checkEmptyField()) {
     showTooltip();
     return;
   }
 
-  const commentBox = document.querySelector('.comments-service__comment-box');
+  const templateComment = document.querySelector(
+    '.comments-service__comment-box'
+  );
   const chat = document.querySelector('.comments-service__chat');
 
-  if (commentBox.classList.contains('hidden')) {
-    addCommentTo(commentBox);
+  if (templateComment.classList.contains('hidden')) {
+    addCommentTextTo(templateComment);
+    addNameTo(templateComment);
+    addAvatarTo(templateComment);
 
-    commentBox.classList.remove('hidden');
-  } else {
-    const newCommentBox = commentBox.cloneNode(true);
+    templateComment.classList.remove('hidden');
 
-    addCommentTo(newCommentBox);
-
-    chat.append(newCommentBox);
+    return;
   }
+
+  const newComment = templateComment.cloneNode(true);
+
+  addCommentTextTo(newComment);
+  addNameTo(newComment);
+  addAvatarTo(newComment);
+
+  chat.append(newComment);
 }
 
-function hasEmptyField() {
+function checkEmptyField() {
   const requiredFields = document.querySelectorAll('.required');
   let anyEmpty = false;
 
@@ -55,13 +63,10 @@ function showTooltip() {
   setTimeout(() => tooltip.classList.remove('visible'), 1500);
 }
 
-function addCommentTo(elem) {
+function addCommentTextTo(elem) {
   const commentTextarea = document.querySelector('#comment');
   const commentText = commentTextarea.value;
   const filteredCommentText = getFilteredComment(commentText);
-
-  addNameTo(elem);
-  addAvatarTo(elem);
 
   elem.querySelector('.comments-service__comment').textContent =
     filteredCommentText;
