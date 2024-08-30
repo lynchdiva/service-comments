@@ -12,6 +12,7 @@ function addComment() {
   const templateComment = document.querySelector(
     '.comments-service__comment-box'
   );
+  const newComment = templateComment.cloneNode(true);
   const chat = document.querySelector('.comments-service__chat');
 
   if (templateComment.classList.contains('hidden')) {
@@ -23,8 +24,6 @@ function addComment() {
 
     return;
   }
-
-  const newComment = templateComment.cloneNode(true);
 
   addCommentTextTo(newComment);
   addNameTo(newComment);
