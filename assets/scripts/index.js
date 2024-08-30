@@ -1,12 +1,9 @@
 const btn = document.querySelector('.comments-service__btn');
-btn.addEventListener('click', addNewComment);
+btn.addEventListener('click', showComment);
 
-function addNewComment() {
+function showComment() {
   if (hasEmptyField()) {
-    const tooltip = document.querySelector('.comments-service__tooltip');
-
-    tooltip.classList.add('visible');
-    setTimeout(() => tooltip.classList.remove('visible'), 1500);
+    showTooltip();
 
     return;
   }
@@ -15,36 +12,57 @@ function addNewComment() {
   const chat = document.querySelector('.comments-service__chat');
 
   if (commentBox.classList.contains('hidden')) {
-    createComment(commentBox);
+    addCommentTo(commentBox);
 
     commentBox.classList.remove('hidden');
   } else {
     const newCommentBox = commentBox.cloneNode(true);
 
-    createComment(newCommentBox);
+    addCommentTo(newCommentBox);
 
     chat.append(newCommentBox);
   }
 }
 
 function hasEmptyField() {
-  const nameInput = document.querySelector('#name');
-  const commentTextarea = document.querySelector('#comment');
+  const requiredFields = document.querySelectorAll('.required');
+  let anyEmpty;
+  requiredFields.forEach(field => {
+    if (!field.value) {
+      addWarningClass(field);
+      anyEmpty = true;
+    }
+  });
 
-  if (nameInput.value && commentTextarea.value) {
-    return false;
-  }
-
-  return true;
+  return anyEmpty;
 }
 
-function createComment(elem) {
+function addWarningClass(elem) {
+  elem.classList.add('warning');
+  addHandler(elem);
+}
+
+function addHandler(elem) {
+  elem.addEventListener('focus', function handler() {
+    this.classList.remove('warning');
+    this.removeEventListener('focus', handler);
+  });
+}
+
+function showTooltip() {
+  const tooltip = document.querySelector('.comments-service__tooltip');
+  tooltip.classList.add('visible');
+
+  setTimeout(() => tooltip.classList.remove('visible'), 1500);
+}
+
+function addCommentTo(elem) {
   const commentTextarea = document.querySelector('#comment');
   const commentText = commentTextarea.value;
-  const filteredCommentText = filterSpam(commentText);
+  const filteredCommentText = getFilteredComment(commentText);
 
-  addName(elem);
-  addAvatar(elem);
+  addNameTo(elem);
+  addAvatarTo(elem);
 
   elem.querySelector('.comments-service__comment').textContent =
     filteredCommentText;
@@ -52,17 +70,24 @@ function createComment(elem) {
   commentTextarea.value = '';
 }
 
-function addName(elem) {
+function getFilteredComment(comment) {
+  return comment
+    .replace(/viagra/gi, '***')
+    .replace(/xxx/gi, '***')
+    .replace(/виагра/gi, '***');
+}
+
+function addNameTo(elem) {
   const nameInput = document.querySelector('#name');
   const name = nameInput.value;
-  const reformedName = reformName(name);
+  const reformedName = getReformedName(name);
 
   elem.querySelector('.comments-service__nickname').textContent = reformedName;
 
   nameInput.value = '';
 }
 
-function reformName(name) {
+function getReformedName(name) {
   let formattedName = name.replace(/\s/g, '');
   formattedName =
     formattedName[0].toUpperCase() + formattedName.slice(1).toLowerCase();
@@ -70,18 +95,19 @@ function reformName(name) {
   return formattedName;
 }
 
-function addAvatar(elem) {
+function addAvatarTo(elem) {
   const avatarInput = document.querySelector('#url-avatar');
-  const avatar = elem.querySelector('img');
+  const avatar = elem.querySelector('.comments-service__avatar');
+  const defaultAvatarPath = './assets/icons/avatar-default.svg';
 
-  avatar.src = avatarInput.value.trim() || './assets/icons/avatar-default.svg';
+  avatar.src = avatarInput.value.trim() || defaultAvatarPath;
 
   avatarInput.value = '';
-}
 
-function filterSpam(comment) {
-  return comment
-    .replace(/viagra/gi, '***')
-    .replace(/xxx/gi, '***')
-    .replace(/виагра/gi, '***');
+  avatar.addEventListener('error', function handler() {
+    console.log('Ошибка при загрузке изображения.');
+
+    this.src = defaultAvatarPath;
+    avatar.removeEventListener('focus', handler);
+  });
 }

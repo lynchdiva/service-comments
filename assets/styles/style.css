@@ -202,6 +202,10 @@ body {
   visibility: visible;
 }
 
+.warning {
+  box-shadow: #ffb012 0px 0px 0px 2px;
+}
+
 /*/////////////////////////MEDIA//////////////////////*/
 
 @media screen and (max-width: 949px) {
