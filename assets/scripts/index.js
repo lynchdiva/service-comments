@@ -1,3 +1,5 @@
+'use strict';
+
 const btn = document.querySelector('.comments-service__btn');
 btn.addEventListener('click', showComment);
 
