@@ -4,7 +4,6 @@ btn.addEventListener('click', showComment);
 function showComment() {
   if (hasEmptyField()) {
     showTooltip();
-
     return;
   }
 
@@ -27,6 +26,7 @@ function showComment() {
 function hasEmptyField() {
   const requiredFields = document.querySelectorAll('.required');
   let anyEmpty;
+
   requiredFields.forEach(field => {
     if (!field.value) {
       addWarningClass(field);
@@ -39,10 +39,7 @@ function hasEmptyField() {
 
 function addWarningClass(elem) {
   elem.classList.add('warning');
-  addHandler(elem);
-}
 
-function addHandler(elem) {
   elem.addEventListener('focus', function handler() {
     this.classList.remove('warning');
     this.removeEventListener('focus', handler);
@@ -106,7 +103,6 @@ function addAvatarTo(elem) {
 
   avatar.addEventListener('error', function handler() {
     console.log('Ошибка при загрузке изображения.');
-
     this.src = defaultAvatarPath;
     avatar.removeEventListener('focus', handler);
   });
