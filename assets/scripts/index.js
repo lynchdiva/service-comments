@@ -1,40 +1,45 @@
 'use strict';
 
-makeChoosingSingleCheckbox();
-
 const btn = document.querySelector('.comments-service__btn');
-const checkboxNoName = document.querySelector(
-  '.comments-service__checkbox[value="no"]'
-);
 const checkboxYesName = document.querySelector(
   '.comments-service__checkbox[value="yes"]'
+);
+const checkboxNoName = document.querySelector(
+  '.comments-service__checkbox[value="no"]'
 );
 
 btn.addEventListener('click', addComment);
 
-checkboxNoName.addEventListener('change', () => {
-  const label = document.querySelector('[for="name"]');
-  const input = document.querySelector('#name');
-
-  label.classList.add('hidden');
-  input.classList.add('hidden');
-
-  input.classList.remove('required');
-});
-
 checkboxYesName.addEventListener('change', () => {
   const label = document.querySelector('[for="name"]');
   const input = document.querySelector('#name');
+  const commentTextArea = document.querySelector('#comment');
 
   label.classList.remove('hidden');
   input.classList.remove('hidden');
-
   input.classList.add('required');
+  commentTextArea.classList.remove('warning');
 });
+
+checkboxNoName.addEventListener('change', () => {
+  const label = document.querySelector('[for="name"]');
+  const input = document.querySelector('#name');
+  const commentTextArea = document.querySelector('#comment');
+
+  label.classList.add('hidden');
+  input.classList.add('hidden');
+  input.classList.remove('required', 'warning');
+  commentTextArea.classList.remove('warning');
+});
+
+makeChoosingSingleCheckbox();
+preventFlagUncheckedByClick(checkboxYesName);
+preventFlagUncheckedByClick(checkboxNoName);
 
 function addComment() {
   if (checkEmptyField()) {
     showTooltip();
+
     return;
   }
 
@@ -53,7 +58,6 @@ function addComment() {
   const chat = document.querySelector('.comments-service__chat');
 
   fillInfo(newComment);
-
   chat.append(newComment);
 }
 
@@ -181,32 +185,50 @@ function addDateTo(elem) {
 function addAvatarTo(elem) {
   const avatarInput = document.querySelector('#url-avatar');
   const avatar = elem.querySelector('.comments-service__avatar');
-  const defaultAvatarPath = './assets/icons/avatar-default.svg';
 
-  avatar.src = avatarInput.value.trim() || defaultAvatarPath;
+  avatar.src = avatarInput.value.trim() || getRandomAvatar();
 
   avatarInput.value = '';
 
   avatar.addEventListener('error', function handler() {
     console.log('Ошибка при загрузке изображения.');
-    avatar.src = defaultAvatarPath;
-    avatar.removeEventListener('focus', handler);
+    avatar.src = getRandomAvatar();
+    avatar.removeEventListener('error', handler);
   });
+}
+
+function getRandomAvatar() {
+  const avatars = [
+    './assets/images/cat.jpg',
+    './assets/images/dog-in-glass.jpg',
+    './assets/images/dog.avif',
+    'assets/images/duck.avif',
+    'assets/images/fox.avif',
+    'assets/images/racoon.webp'
+  ];
+  const randomNum = Math.floor(Math.random() * avatars.length);
+
+  return avatars[randomNum];
 }
 
 function makeChoosingSingleCheckbox() {
   const checkboxes = document.querySelectorAll('.comments-service__checkbox');
 
-  checkboxes.forEach(checkbox =>
+  checkboxes.forEach(checkbox => {
     checkbox.addEventListener('change', () => {
       checkboxes.forEach(cb => {
         if (cb !== checkbox) {
           cb.checked = false;
         }
-        if (cb === checkbox && !cb.checked) {
-          cb.checked = true;
-        }
       });
-    })
-  );
+    });
+  });
+}
+
+function preventFlagUncheckedByClick(elem) {
+  elem.addEventListener('click', e => {
+    if (!elem.checked) {
+      e.preventDefault();
+    }
+  });
 }
